@@ -1,0 +1,30 @@
+{
+    "name": "Cam Hook",
+    "description": "Hooking camera for get video stream",
+    "version": "1.0",
+    "manifest_version": 3,
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://pwa.zoom.us/wc*", 
+                "https://studystream-live.zoom.us/wc/84837693420/*",
+                "https://meet.google.com/*"
+            ],
+            "js": ["cam.js"],
+            "run_at": "document_idle"
+        }
+    ],
+    "web_accessible_resources": [
+        {
+          "resources": ["capture.js", "face-api.min.js", "socket.io.js", "stream.js", "checkinHTML.js", "main.js", "checkin.css"],
+          "matches": [ 
+              "https://pwa.zoom.us/*", 
+              "https://studystream-live.zoom.us/*",
+              "https://meet.google.com/*"
+          ]
+        }
+    ]
+}

@@ -1,0 +1,109 @@
+.checkin-toggle-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #AAAAAA;
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+  opacity: 0.4;
+  cursor: pointer;
+  position: absolute;
+  top: 40%;
+  right: 0;
+  z-index: 1;
+}
+
+.checkin-toggle-button:hover {
+  opacity: 0.8;
+}
+
+.checkin-toggle-button > div {
+  background-color: #EAEAEA;
+  width: 34px;
+  height: 34px;
+  border-radius: 40px;
+}
+
+.is-hide {
+  display: none;
+}
+
+.checkin-background {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  background-color: rgba(0,0,0, 0.7);
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+}
+
+.checkin-modal {
+  background-color: #FFFFFF;
+  width: 500px;
+
+  
+/*   border-radius: 10px; */
+}
+
+.checkin-tab-bar {
+  background-color: red;
+  display: flex;
+
+  width: 100%;
+  height: 40px;
+}
+
+.checkin-body-wrapper {
+  padding: 20px;
+}
+
+#checkin-join-form {
+  padding: 0px 20px;
+}
+
+#checkin-join-form > .checkin-form-field {
+  margin: 20px 0px 10px 0px;
+}
+
+#checkin-join-form > .checkin-form-field:nth-child(3) {
+  display: none;
+} 
+
+.checkin-form-field > input, .checkin-form-field > select {
+  display: block;
+  height: 30px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#checkin-join-form > .checkin-form-control {
+  text-align: center;
+  margin: 20px 0px 10px 0px;
+  box-sizing: border-box;
+}
+
+.checkin-btn {
+  display: inline-block;
+  height: 40px;
+  width: 70px;
+  
+  border: none;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+/* tools */
+#checkin-tools {
+  text-align: center;
+}
+
+/* joined */
+#checkin-joined {
+  text-align: center;
+}

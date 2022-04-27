@@ -1,0 +1,23 @@
+_format_version: "2.1"
+_transform: true
+
+services:
+- name: identificationTicket
+  url: http://localhost:3002/
+  routes:
+  - name: ticket-post
+    paths:
+    - /faces
+  plugins:
+    - name: jwt
+      config:
+        claims_to_verify: 
+          - "exp"
+
+consumers:
+  - username: organization
+
+jwt_secrets:
+  - consumer: organization
+    secret: khoaluansecret
+
