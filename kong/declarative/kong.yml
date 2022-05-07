@@ -2,17 +2,26 @@ _format_version: "2.1"
 _transform: true
 
 services:
-- name: identificationTicket
-  url: http://localhost:3002/
-  routes:
-  - name: ticket-post
-    paths:
-    - /faces
-  plugins:
-    - name: jwt
-      config:
-        claims_to_verify: 
-          - "exp"
+  - name: identificationTicket
+    url: http://localhost:3002/
+    routes:
+      - name: ticket-post
+        paths:
+          - /faces
+    plugins:
+      - name: jwt
+        config:
+          claims_to_verify: 
+            - "exp"
+
+  - name: faceRegister
+    url: http://41bd-14-186-162-157.jp.ngrok.io/register
+    routes:
+      - name: face-register
+        paths: 
+          - /faces/register
+        # strip_path: true
+        
 
 consumers:
   - username: organization

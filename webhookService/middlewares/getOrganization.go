@@ -8,7 +8,7 @@ import (
 	"github.com/kataras/iris/v12"
 )
 
-func GetUser(ctx iris.Context) {
+func GetOrganization(ctx iris.Context) {
 	authorization := ctx.GetHeader("authorization")
 	token := strings.Split(authorization, " ")[1]
 	body64 := strings.Split(token, ".")[1]
@@ -17,6 +17,6 @@ func GetUser(ctx iris.Context) {
 	body := map[string]interface{}{}
 	json.Unmarshal(bodyByte, &body)
 
-	ctx.Values().Set("organization", body["name"].(string))
+	ctx.Values().Set("organization", body["organization"].(string))
 	ctx.Next()
 }
