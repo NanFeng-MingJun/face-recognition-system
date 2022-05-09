@@ -1,11 +1,12 @@
 import sys
 import os
+from datetime import datetime
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
-from typing import List
 from fastapi.params import Depends
-from fastapi import APIRouter, Request
+from fastapi import APIRouter
 from pydantic import BaseModel
+
 
 from services.VerifyService import VerifyService
 from config.db_config import get_db, get_model
@@ -15,12 +16,19 @@ class VerifyFace(BaseModel):
     label: str
     organization: str
     deparment: str
+    
+    
+class VerifyResult(BaseModel):
+    result: bool
+    bbox: list
+    time: datetime
+    
 
 class VerifyController:
     router = APIRouter()
 
     @staticmethod
-    @router.post("/verify")
+    @router.post("/verify", response_model=VerifyResult)
     def register(payload: VerifyFace, model = Depends(get_model), db = Depends(get_db)):
         
         #tmp = [[payload.url],[payload.label], payload.organization, payload.deparment] 

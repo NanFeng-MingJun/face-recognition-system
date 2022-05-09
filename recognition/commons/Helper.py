@@ -71,37 +71,36 @@ def get_norm_crop(img_path, size = 112, detector_backend = "mtcnn"):
       return im
 
     bbox, landmark = detect_faces(im)
+    
+    if bbox is None:
+      print("Can not detect face: ", img_path)
+      return im, [-1,-1,-1,-1]
 
     nrof_faces = bbox.shape[0]
-    if nrof_faces > 0:
-        det = bbox[:, 0:4]
-        img_size = np.asarray(im.shape)[0:2]
-        bindex = 0
-        if nrof_faces > 1:
-            bounding_box_size = (det[:, 2] - det[:, 0]) * (det[:, 3] -
-                                                           det[:, 1])
-            img_center = img_size / 2
-            offsets = np.vstack([(det[:, 0] + det[:, 2]) / 2 - img_center[1],
-                                 (det[:, 1] + det[:, 3]) / 2 - img_center[0]])
-            offset_dist_squared = np.sum(np.power(offsets, 2.0), 0)
-            bindex = np.argmax(bounding_box_size - offset_dist_squared * 2.0)  # some extra weight on the centering
-        #_bbox = bounding_boxes[bindex, 0:4]
-        _landmark = landmark[bindex]
-        warped = norm_crop(im, landmark=_landmark, image_size=size)
-        return warped
-    else:
-        print("Can not detect face: ", img_path)
-        return im
-
+    bindex = 0
+    
+    if nrof_faces > 1:
+      det = bbox[:, 0:4]
+      img_size = np.asarray(im.shape)[0:2]
+      bounding_box_size = (det[:, 2] - det[:, 0]) * (det[:, 3] - det[:, 1])
+      img_center = img_size / 2
+      offsets = np.vstack([(det[:, 0] + det[:, 2]) / 2 - img_center[1], (det[:, 1] + det[:, 3]) / 2 - img_center[0]])
+      offset_dist_squared = np.sum(np.power(offsets, 2.0), 0)
+      bindex = np.argmax(bounding_box_size - offset_dist_squared * 2.0)  # some extra weight on the centering
+      
+    _bbox = bbox[bindex, 0:4]
+    _landmark = landmark[bindex]
+    warped = norm_crop(im, landmark=_landmark, image_size=size)
+    return warped, _bbox
 
 def preprocess(img_path, size=112, detector_backend = "mtcnn"):
 
-  img = get_norm_crop(img_path, size, detector_backend)
+  img, bbox = get_norm_crop(img_path, size, detector_backend)
   if img.shape[0] != 112:
     img = cv2.resize(img, (112, 112), interpolation = cv2.INTER_AREA)
   img = np.transpose(img, axes=(2, 0, 1))
 
-  return img
+  return img, bbox
 
 
 def get_embedding(model, img, embeding_size = 512):
