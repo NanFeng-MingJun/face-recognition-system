@@ -28,5 +28,6 @@ func main() {
 	requestUC := ticketusecase.New(messengerUC)
 	ticketdelivery.New(app, requestUC)
 
+	log.Println("Running on 3002")
 	app.Listen(":3002")
 }

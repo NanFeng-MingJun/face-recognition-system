@@ -25,8 +25,8 @@ func (h *ticketHandler) SendTicket(ctx iris.Context) {
 		ctx.StopWithError(iris.StatusBadRequest, err)
 		return
 	}
-	// read username as ticket class
-	ticket.Class = ctx.Values().GetString("username")
+	// read organization
+	ticket.Organization = ctx.Values().GetString("organization")
 	// Send to necessary services
 	id, err := h.uc.SendTicket(ticket)
 	if err != nil {
