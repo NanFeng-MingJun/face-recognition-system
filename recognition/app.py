@@ -1,14 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import onnx
-import onnxruntime
 import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from controllers.RegisterController import RegisterController
 from controllers.VerifyController import VerifyController
-from config import db_config
+from controllers.IdentityController import IdentityController
 
 app = FastAPI()
 
@@ -24,3 +22,4 @@ app.add_middleware(
 
 app.include_router(RegisterController.router)
 app.include_router(VerifyController.router)
+app.include_router(IdentityController.router)

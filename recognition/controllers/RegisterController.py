@@ -1,5 +1,6 @@
 import sys
 import os
+from datetime import datetime
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from typing import List
@@ -15,12 +16,19 @@ class RegisterFace(BaseModel):
     label: str
     organization: str
     deparment: str
+    
+    
+class RegisterResult(BaseModel):
+    result: bool
+    bbox: list
+    time: datetime
+    
 
 class RegisterController:
     router = APIRouter()
 
     @staticmethod
-    @router.post("/register")
+    @router.post("/register", response_model=RegisterResult)
     def register(payload: RegisterFace, model = Depends(get_model), db = Depends(get_db)):
         
         #tmp = [[payload.url],[payload.label], payload.organization, payload.deparment] 

@@ -200,6 +200,39 @@ class EmbedHandler:
             
         #connections.disconnect(self.alias)
         
+        
+    def search(self, embedding, collection_name, partition_name = '_default'):
+        #connections.connect("default", host="localhost", port="19530")
+        checker = utility.has_collection(collection_name)
+        if checker == False:
+            print("No Milvus collection with name: ", collection_name, " exits")
+            connections.disconnect(self.alias)
+            return None
+        
+        collection = Collection(collection_name)
+        result = None
+        
+        try:
+            #collection.load()
+            #print(collection.num_entities)
+
+            result = collection.search(embedding, "embeddings", {"metric_type": "IP"},1,exp=None,partition_names=[partition_name],consistency_level="Strong")
+            # No result macths
+            if len(result[0]) == 0:
+                return 0, 0
+            else:
+                return result[0].ids[0], 1 - result[0].distances[0]
+
+            #collection.release()
+        except BaseException as error:
+            print("Failed search_by_id {}".format(error))
+            return -1, -1
+        except ParamError as error:
+            print("Failed search_by_id {}".format(error))
+            return -1, -1
+            
+        #connections.disconnect(self.alias)
+        
 #rng = np.random.default_rng(seed=19530)
 #emb = rng.random((512))
 #emb = normalize([emb])
