@@ -15,7 +15,7 @@ services:
     image: confluentinc/cp-kafka:7.1.0
     hostname: broker
     container_name: broker
-    restart: on-failure 
+    # restart: on-failure 
     depends_on:
       - zookeeper
     ports:
@@ -36,7 +36,7 @@ services:
     hostname: broker-connect
     command: connect-standalone /etc/kafka/connect-standalone.properties /etc/kafka/redis-request.properties
     container_name: broker-connect
-    restart: on-failure 
+    # restart: on-failure 
     depends_on:
       - broker
     volumes:
