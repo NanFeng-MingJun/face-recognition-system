@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"context"
 	"encoding/json"
 	"request-service/domain"
 
@@ -11,11 +12,13 @@ import (
 
 type ticketUseCase struct {
 	messagerUC domain.MessengerUseCase
+	repo       domain.TicketRepository
 }
 
-func New(messagerUC domain.MessengerUseCase) domain.TicketUseCase {
+func New(messagerUC domain.MessengerUseCase, repo domain.TicketRepository) domain.TicketUseCase {
 	return &ticketUseCase{
 		messagerUC: messagerUC,
+		repo:       repo,
 	}
 }
 
@@ -32,4 +35,8 @@ func (uc *ticketUseCase) SendTicket(payload *domain.Ticket) (string, error) {
 	}
 
 	return payload.ID, nil
+}
+
+func (uc *ticketUseCase) GetTicketResult(ctx context.Context, ticketID string) (*domain.TicketResult, error) {
+	return uc.repo.GetTicketResult(ctx, ticketID)
 }

@@ -1,6 +1,9 @@
 package delivery
 
 import (
+	"context"
+	"log"
+	"request-service/apperrors"
 	"request-service/domain"
 
 	"github.com/kataras/iris/v12"
@@ -13,21 +16,21 @@ type ticketHandler struct {
 func New(app *iris.Application, uc domain.TicketUseCase) {
 	h := &ticketHandler{uc: uc}
 
-	api := app.Party("/tickets")
-	api.Post("/", h.SendTicket)
+	app.Post("/", h.SendTicket)
+	app.Get("/{ticketID:string}/result", h.GetTicketResult)
 }
 
 func (h *ticketHandler) SendTicket(ctx iris.Context) {
 	ticket := new(domain.Ticket)
-	// read request body
+
 	err := ctx.ReadJSON(ticket)
 	if err != nil {
 		ctx.StopWithError(iris.StatusBadRequest, err)
 		return
 	}
-	// read organization
+
 	ticket.Organization = ctx.Values().GetString("organization")
-	// Send to necessary services
+
 	id, err := h.uc.SendTicket(ticket)
 	if err != nil {
 		ctx.StopWithError(iris.StatusInternalServerError, err)
@@ -37,4 +40,22 @@ func (h *ticketHandler) SendTicket(ctx iris.Context) {
 	ctx.JSON(map[string]interface{}{
 		"ticketID": id,
 	})
+}
+
+func (h *ticketHandler) GetTicketResult(ctx iris.Context) {
+	ticketID := ctx.Params().Get("ticketID")
+	result, err := h.uc.GetTicketResult(context.Background(), ticketID)
+
+	if err != nil {
+		if err == apperrors.ErrDataNotFound {
+			ctx.StopWithStatus(iris.StatusNotFound)
+			return
+		} else {
+			log.Println(err)
+			ctx.StopWithStatus(iris.StatusInternalServerError)
+			return
+		}
+	}
+
+	ctx.JSON(result)
 }
