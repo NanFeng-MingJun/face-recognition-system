@@ -20,6 +20,6 @@ class IdentifyService:
         id, distance = db.search(emb, message[1], message[2])
         
         if distance < verify_threshold:
-            return {'identity': int(id), 'bbox': list(bbox), 'time': datetime.datetime.now()}
+            return {'identity': int(id), 'bbox': list(bbox), 'time': int(datetime.datetime.now().timestamp() * 1000)}
         else:
-            return {'identity': -1, 'bbox': list(bbox), 'time': datetime.datetime.now()}
+            return {'identity': -1, 'bbox': list(bbox), 'time': int(datetime.datetime.now().timestamp() * 1000)}

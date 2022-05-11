@@ -1,6 +1,7 @@
 import sys
 import os
 from datetime import datetime
+
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from fastapi.params import Depends
@@ -21,7 +22,7 @@ class VerifyFace(BaseModel):
 class VerifyResult(BaseModel):
     result: bool
     bbox: list
-    time: datetime
+    time: int
     
 
 class VerifyController:
@@ -31,6 +32,6 @@ class VerifyController:
     @router.post("/verify", response_model=VerifyResult)
     def register(payload: VerifyFace, organization = Depends(get_organization), model = Depends(get_model), db = Depends(get_db)):
         
-        #tmp = [[payload.url],[payload.label], organization, payload.deparment] 
-        tmp = [['https://image.thanhnien.vn/w2048/Uploaded/2022/mftum/2022_04_27/dam-vinh-hung-ly-hon-9854.png'],[18120506], 'HCMUS', 'cs101']
+        tmp = [[payload.url],[payload.label], organization, payload.deparment] 
+        #tmp = [['https://image.thanhnien.vn/w2048/Uploaded/2022/mftum/2022_04_27/dam-vinh-hung-ly-hon-9854.png'],[18120506], 'HCMUS', 'cs101']
         return VerifyService.verify(tmp,model,db)

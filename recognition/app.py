@@ -56,8 +56,8 @@ async def initialize():
     global consumer
     global producer
     
-    consumer = aiokafka.AIOKafkaConsumer('new_ticket_received', loop=loop, bootstrap_servers='localhost:9092', value_deserializer=deserializer)
-    producer = aiokafka.AIOKafkaProducer(loop=loop, bootstrap_servers='localhost:9092', value_serializer=serializer)
+    consumer = aiokafka.AIOKafkaConsumer('new_ticket_received', loop=loop, bootstrap_servers='0.tcp.jp.ngrok.io:10536', value_deserializer=deserializer, group_id='identity')
+    producer = aiokafka.AIOKafkaProducer(loop=loop, bootstrap_servers='0.tcp.jp.ngrok.io:10536', value_serializer=serializer)
     # get cluster layout and join group
     await consumer.start()
     
