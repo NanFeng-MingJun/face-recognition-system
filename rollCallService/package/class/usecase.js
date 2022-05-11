@@ -1,12 +1,7 @@
-const classes = [
-    {
-        classID: "cs123",
-        password: "123"
-    }
-]
+const repo = require("./repository");
 
 async function getClassByID(classID) {
-    return classes.find(classItem => classItem.classID == classID);
+    return repo.getClassByID(classID);
 }
 
 module.exports = {

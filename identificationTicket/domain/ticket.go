@@ -10,19 +10,19 @@ type Ticket struct {
 	Metadata     map[string]interface{} `json:"metadata"`
 }
 
-type boundingBox struct {
-	X      int `json:"x"`
-	Y      int `json:"y"`
-	Width  int `json:"width"`
-	Height int `json:"height"`
-}
+// type boundingBox struct {
+// 	X      int `json:"x"`
+// 	Y      int `json:"y"`
+// 	Width  int `json:"width"`
+// 	Height int `json:"height"`
+// }
 
 type TicketResult struct {
 	ID           string      `json:"ID"`
 	Organization string      `json:"organization"`
 	Department   string      `json:"department"`
 	TicketID     string      `json:"ticketID"`
-	BoundingBox  boundingBox `json:"boundingBox"`
+	BoundingBox  [4]int      `json:"boundingBox"`
 	Timestamp    uint64      `json:"timestamp"`
 	Metadata     interface{} `json:"metadata"`
 }

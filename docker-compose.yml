@@ -99,6 +99,16 @@ services:
       - 3002:3002
     depends_on:
       - broker
+
+  webhook-service:
+    build:
+      context: ./webhookService
+    container_name: webhook-service
+    hostname: webhook-service
+    ports:
+      - 3003:3003
+    depends_on:
+      - broker
     
 
 

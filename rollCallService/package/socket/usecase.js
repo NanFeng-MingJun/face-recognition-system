@@ -1,3 +1,4 @@
+const checkinUC = require("../checkin/repository.js");
 const classUC = require("./../class/usecase.js");
 
 // Join class event for member
@@ -33,9 +34,11 @@ async function joinClassAsHost(socket, data) {
 
 // Capture member for host
 function captureMember(socket, data) {
-	console.log(socket.role, socket.room)
+	console.log(socket.role, socket.room);
     if (socket.role != "host") return;
-    socket.to(socket.room).emit("capture", {});
+
+    const checkinID = checkinUC.createCheckin(socket.room);
+    socket.to(socket.room).emit("capture", { checkinID });
 }
 
 module.exports = {
