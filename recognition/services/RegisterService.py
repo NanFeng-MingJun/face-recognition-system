@@ -20,6 +20,6 @@ class RegisterService:
             img, bbox = preprocess(message[0][0], 112, 'centerface')
             emb = get_embedding(model_loaded, img)
             db.insert_vector([int(message[1][0])], emb, message[2], message[3])
-            return {'result': True, 'bbox': list(bbox), 'time': datetime.datetime.now()}
+            return {'result': True, 'bbox': list(bbox), 'time': int(datetime.datetime.now().timestamp() * 1000)}
         except:
-            return {'result': False, 'bbox': [-1,-1,-1,-1], 'time': datetime.datetime.now()}
+            return {'result': False, 'bbox': [-1,-1,-1,-1], 'time': int(datetime.datetime.now().timestamp() * 1000)}

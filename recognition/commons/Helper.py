@@ -143,7 +143,7 @@ def load_onnx(model):
   #model = onnx.load(model_path)
   #model = model.SerializeToString()
   session = onnxruntime.InferenceSession(model, providers = ['CPUExecutionProvider']) #['TensorrtExecutionProvider', 'CUDAExecutionProvider', 'CPUExecutionProvider']
-
+  
   return session
 
 

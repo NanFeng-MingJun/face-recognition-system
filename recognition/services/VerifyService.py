@@ -21,6 +21,6 @@ class VerifyService:
         id, distance = db.search_by_id(message[1][0], emb, message[2], message[3])
         
         if id == int(message[1][0]) and distance < verify_threshold:
-            return {'result': True, 'bbox': list(bbox), 'time': datetime.datetime.now()}
+            return {'result': True, 'bbox': list(bbox), 'time': int(datetime.datetime.now().timestamp() * 1000)}
         else:
-            return {'result': False, 'bbox': list(bbox), 'time': datetime.datetime.now()}
+            return {'result': False, 'bbox': list(bbox), 'time': int(datetime.datetime.now().timestamp() * 1000)}

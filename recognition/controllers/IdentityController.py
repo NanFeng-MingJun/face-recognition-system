@@ -1,6 +1,7 @@
 import sys
 import os
 from datetime import datetime
+from numpy import int64
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from fastapi.params import Depends
@@ -20,7 +21,7 @@ class IdentityFace(BaseModel):
 class IdentityResult(BaseModel):
     identity: str
     bbox: list
-    time: datetime
+    time: int
     
 
 class IdentityController:
@@ -30,6 +31,6 @@ class IdentityController:
     @router.post("/identity", response_model=IdentityResult)
     def register(payload: IdentityFace, model = Depends(get_model), db = Depends(get_db)):
         
-        #tmp = [[payload.url], payload.organization, payload.deparment] 
-        tmp = [['https://image.thanhnien.vn/w2048/Uploaded/2022/mftum/2022_04_27/dam-vinh-hung-ly-hon-9854.png'], 'HCMUS', 'cs101']
+        tmp = [[payload.url], payload.organization, payload.deparment] 
+        #tmp = [['https://image.thanhnien.vn/w2048/Uploaded/2022/mftum/2022_04_27/dam-vinh-hung-ly-hon-9854.png'], 'HCMUS', 'cs101']
         return IdentifyService.identify(tmp,model,db)

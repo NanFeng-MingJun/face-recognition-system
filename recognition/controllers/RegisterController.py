@@ -1,6 +1,8 @@
 import sys
 import os
 from datetime import datetime
+
+from numpy import int64
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from typing import List
@@ -21,7 +23,7 @@ class RegisterFace(BaseModel):
 class RegisterResult(BaseModel):
     result: bool
     bbox: list
-    time: datetime
+    time: int
     
 
 class RegisterController:
@@ -31,8 +33,8 @@ class RegisterController:
     @router.post("/register", response_model=RegisterResult)
     def register(payload: RegisterFace, organization = Depends(get_organization), model = Depends(get_model), db = Depends(get_db)):
         
-        #tmp = [[payload.url],[payload.label], organization, payload.deparment] 
-        tmp = [['https://image.thanhnien.vn/w2048/Uploaded/2022/mftum/2022_04_27/dam-vinh-hung-ly-hon-9854.png'],[18120506], 'school_a', 'class_1']
+        tmp = [[payload.url],[payload.label], organization, payload.deparment] 
+        #tmp = [['https://image.thanhnien.vn/w2048/Uploaded/2022/mftum/2022_04_27/dam-vinh-hung-ly-hon-9854.png'],[18120506], 'school_a', 'class_1']
         
         return RegisterService.register(tmp,model,db)
 
