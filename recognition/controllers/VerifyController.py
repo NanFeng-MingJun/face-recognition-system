@@ -10,11 +10,11 @@ from pydantic import BaseModel
 
 from services.VerifyService import VerifyService
 from config.db_config import get_db, get_model
+from commons.Dependencies import get_organization
 
 class VerifyFace(BaseModel):
     url: str
     label: str
-    organization: str
     deparment: str
     
     
@@ -29,8 +29,8 @@ class VerifyController:
 
     @staticmethod
     @router.post("/verify", response_model=VerifyResult)
-    def register(payload: VerifyFace, model = Depends(get_model), db = Depends(get_db)):
+    def register(payload: VerifyFace, organization = Depends(get_organization), model = Depends(get_model), db = Depends(get_db)):
         
-        #tmp = [[payload.url],[payload.label], payload.organization, payload.deparment] 
+        #tmp = [[payload.url],[payload.label], organization, payload.deparment] 
         tmp = [['https://image.thanhnien.vn/w2048/Uploaded/2022/mftum/2022_04_27/dam-vinh-hung-ly-hon-9854.png'],[18120506], 'HCMUS', 'cs101']
         return VerifyService.verify(tmp,model,db)
