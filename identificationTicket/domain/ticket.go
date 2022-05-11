@@ -3,8 +3,8 @@ package domain
 import "context"
 
 type Ticket struct {
-	ID           string                 `json:"id"`
-	Url          string                 `json:"url"`
+	TicketID     string                 `json:"ticketID"`
+	ImageUrl     string                 `json:"imageUrl"`
 	Organization string                 `json:"organization"`
 	Department   string                 `json:"department"`
 	Metadata     map[string]interface{} `json:"metadata"`

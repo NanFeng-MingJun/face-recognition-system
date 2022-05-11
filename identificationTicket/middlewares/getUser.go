@@ -17,6 +17,6 @@ func GetUser(ctx iris.Context) {
 	body := map[string]interface{}{}
 	json.Unmarshal(bodyByte, &body)
 
-	ctx.Values().Set("organization", body["name"].(string))
+	ctx.Values().Set("organization", body["organization"].(string))
 	ctx.Next()
 }

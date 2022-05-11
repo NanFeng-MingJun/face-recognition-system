@@ -23,7 +23,7 @@ func New(messagerUC domain.MessengerUseCase, repo domain.TicketRepository) domai
 }
 
 func (uc *ticketUseCase) SendTicket(payload *domain.Ticket) (string, error) {
-	payload.ID = uuid.NewString()
+	payload.TicketID = uuid.NewString()
 	jsonBytes, err := json.Marshal(&payload)
 	if err != nil {
 		return "", errors.Wrap(err, "JSON Marshal in SendTicket usecase")
@@ -34,7 +34,7 @@ func (uc *ticketUseCase) SendTicket(payload *domain.Ticket) (string, error) {
 		return "", errors.Wrap(err, "SendMessage in SendTicket usecase")
 	}
 
-	return payload.ID, nil
+	return payload.TicketID, nil
 }
 
 func (uc *ticketUseCase) GetTicketResult(ctx context.Context, ticketID string) (*domain.TicketResult, error) {
