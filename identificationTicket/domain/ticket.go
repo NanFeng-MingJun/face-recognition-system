@@ -22,7 +22,7 @@ type TicketResult struct {
 	Organization string      `json:"organization"`
 	Department   string      `json:"department"`
 	TicketID     string      `json:"ticketID"`
-	BoundingBox  [4]int      `json:"boundingBox"`
+	BoundingBox  [4]float64  `json:"boundingBox"`
 	Timestamp    uint64      `json:"timestamp"`
 	Metadata     interface{} `json:"metadata"`
 }

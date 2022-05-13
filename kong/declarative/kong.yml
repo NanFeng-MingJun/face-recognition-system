@@ -3,24 +3,30 @@ _transform: true
 
 services:
   - name: identificationTicket
-    url: http://localhost:3002/
+    url: http://identification-ticket:3002/
     routes:
-      - name: ticket-post
+      - name: ticket
         paths:
-          - /faces
+          - /tickets
     plugins:
       - name: jwt
         config:
           claims_to_verify: 
             - "exp"
 
-  - name: faceRegister
-    url: http://41bd-14-186-162-157.jp.ngrok.io/register
+  - name: face-recognition
+    url: http://recognition-service:3000/
     routes:
-      - name: face-register
+      - name: face
         paths: 
-          - /faces/register
-        # strip_path: true
+          - /faces
+          
+    plugins:
+      - name: jwt
+        config:
+          claims_to_verify: 
+            - "exp"
+        
         
 
 consumers:
@@ -28,5 +34,6 @@ consumers:
 
 jwt_secrets:
   - consumer: organization
+    key: khoaluankey
     secret: khoaluansecret
 

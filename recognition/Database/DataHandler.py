@@ -1,3 +1,4 @@
+import os
 import numpy as np
 from sklearn.preprocessing import normalize
 from pymilvus import (
@@ -12,8 +13,8 @@ from pymilvus import (
 class EmbedHandler:
     def __init__(self):
         self.alias = 'default'
-        self.host = 'localhost'
-        self.port = '19530'
+        self.host = os.getenv('MILVUS_HOST')
+        self.port = os.getenv('MILVUS_PORT')
         self.client = None
         self.is_loaded = False
         print("Milvus init")
@@ -26,7 +27,7 @@ class EmbedHandler:
             print("Failed connecting to Milvus {}".format(error))
             
             
-    def connect(self, alias='default', host='localhost', port = '19530'):
+    def connect(self, alias='default', host=os.getenv('MILVUS_HOST'), port=os.getenv('MILVUS_PORT')):
         try:
             self.client = connections.connect(alias, host=host, port=port)
             print("Milvus connect function")

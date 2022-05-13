@@ -4,8 +4,11 @@ import json
 import sys
 import os
 
+from dotenv import load_dotenv
 from typing import Set
 from kafka import TopicPartition
+
+load_dotenv(os.getenv('ENV_PROD_FILE') or '.env.dev')
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from services.IdentifyService import IdentifyService
@@ -21,8 +24,8 @@ async def initialize():
     global consumer
     global producer
     
-    consumer = aiokafka.AIOKafkaConsumer('new_ticket_received', loop=loop, bootstrap_servers='0.tcp.jp.ngrok.io:10136', value_deserializer=deserializer)
-    producer = aiokafka.AIOKafkaProducer(loop=loop, bootstrap_servers='0.tcp.jp.ngrok.io:10136', value_serializer=serializer)
+    consumer = aiokafka.AIOKafkaConsumer('new_ticket_received', loop=loop, bootstrap_servers=os.getenv('KAFKA_BROKER_SERVER'), value_deserializer=deserializer, group_id='recognition')
+    producer = aiokafka.AIOKafkaProducer(loop=loop, bootstrap_servers=os.getenv('KAFKA_BROKER_SERVER'), value_serializer=serializer)
     # get cluster layout and join group
     await consumer.start()
     
