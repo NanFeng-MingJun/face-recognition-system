@@ -14,6 +14,7 @@ services:
   broker:
     image: confluentinc/cp-kafka:7.1.0
     hostname: broker
+    user: "0"
     container_name: broker
     # restart: on-failure 
     depends_on:
