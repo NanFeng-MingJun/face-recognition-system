@@ -16,6 +16,15 @@ const studentSchema = new mongoose.Schema({
         required: true
     },
 
+    img: {
+        type: String,
+    },
+
+    isImgUploaded: {
+        type: Boolean,
+        default: false
+    },
+
     createdAt: {
         type: Date,
         default: Date.now

@@ -10,9 +10,6 @@ async function init() {
     catch(err) {
         console.error(err.code);
     }
-
-    const ci = await createCheckin("cs123");
-    console.log(ci.toString());
 }
 
 module.exports = { init }

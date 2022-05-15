@@ -16,6 +16,7 @@ mongoConfig.init();
 const socketDelivery = require("./package/socket/delivery.js");
 const imageDelivery = require("./package/image/delivery.js");
 const studentDelivery = require("./package/student/delivery.js");
+const checkinDelivery = require("./package/checkin/delivery.js");
 
 const app = express();
 const server = http.createServer(app);
@@ -32,6 +33,7 @@ app.use(express.json());
 socketDelivery.handleWebSocket(io);
 app.use("/images", imageDelivery.router);
 app.use("/students", studentDelivery.router);
+app.use("/checkin", checkinDelivery.router);
 
 
 // health check
@@ -53,4 +55,4 @@ app.use((err, req, res, next) => {
     res.status(code).json({ error: message, detail: detail });
 });
 
-server.listen(3000);
+server.listen(3005);
