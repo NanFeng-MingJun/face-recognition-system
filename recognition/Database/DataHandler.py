@@ -1,9 +1,8 @@
 import os
-import numpy as np
-from sklearn.preprocessing import normalize
+#import numpy as np
+#from sklearn.preprocessing import normalize
 from pymilvus import (
     connections,
-    has_partition,
     utility,
     FieldSchema, CollectionSchema, DataType,
     Collection, BaseException, ParamError
@@ -79,7 +78,7 @@ class EmbedHandler:
                 collection.create_partition(partition_name)
                 
             print('Create collection with name: ', collection.name)
-            print('Partitions: ')
+            print('Partitions: ', collection.partitions)
             print('Schema', collection.schema)
             collection.load()
         except BaseException as error:

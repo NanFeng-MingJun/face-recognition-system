@@ -65,7 +65,7 @@ async def consume_message(consumer):
     try:
         # consume messages
         async for msg in consumer:
-            print(type(msg.value), msg.value)
+            #print(type(msg.value), msg.value)
             tmp = msg.value
             if "department" in tmp:
                 input_msg = [[tmp["imageUrl"]],tmp["organization"], tmp["department"]]
