@@ -1,0 +1,9 @@
+p, nonstudent, /students/info, GET, deny
+p, nonstudent, /students/image, POST, deny
+p, nonclass, /classes/info, GET, deny
+
+g, student, nonclass
+g, anonymous, nonclass
+
+g, class, nonstudent
+g, anonymous, nonstudent

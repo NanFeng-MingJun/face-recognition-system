@@ -11,13 +11,19 @@ const studentSchema = new mongoose.Schema({
         required: true
     },
 
+    password: {
+        type: String,
+        required: true
+    },
+
     phone: {
         type: String,
         required: true
     },
 
-    img: {
+    imageUrl: {
         type: String,
+        default: ""
     },
 
     isImgUploaded: {

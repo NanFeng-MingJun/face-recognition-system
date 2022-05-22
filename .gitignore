@@ -1,2 +1,4 @@
 */**/node_modules
 */**/venv
+rollcallFE/*/dist
+rollcallFE/*/.parcel-cache

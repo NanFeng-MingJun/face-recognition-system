@@ -16,7 +16,7 @@ let currentScreen = chkJoinForm;
 
 
 let checkinState = null;
-const socket = io.connect("http://localhost:3000");
+const socket = io.connect("http://localhost:3005");
 
 
 function closeContainer() {
@@ -68,7 +68,7 @@ chkToolsCaptureBtn.addEventListener("click", e => {
 
 // socket event
 socket.on("notify-join", data => {
-    if (data.status == 404) {
+    if (data.status == 401 || data.status == 404) {
         alert(data.message);
         return;
     }
@@ -82,6 +82,7 @@ socket.on("notify-join", data => {
     currentScreen.classList.remove("is-hide");
 });
 
-socket.on("capture", () => {
-    capture();
+socket.on("capture", (data) => {
+    console.log(data);
+    capture(data.checkinID);
 });

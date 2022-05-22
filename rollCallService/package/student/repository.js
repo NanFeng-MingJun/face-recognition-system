@@ -13,6 +13,28 @@ async function createStudent(student) {
     }
 }
 
+async function getStudentByID(studentID) {
+    try {
+        return await Students.findById(studentID);
+    }
+    catch(err) {
+        console.error(err);
+        throw new AppError(500, "InternalError")
+    }
+}
+
+async function update(student) {
+    try {
+        await student.save();
+    }
+    catch(err) {
+        console.error(err);
+        throw new AppError(500, "InternalError")
+    }
+} 
+
 module.exports = { 
-    createStudent 
+    createStudent,
+    update,
+    getStudentByID
 }

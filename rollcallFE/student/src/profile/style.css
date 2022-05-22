@@ -1,0 +1,14 @@
+.container {
+    height: 100vh;
+}
+
+.box > * {
+    width: 500px;
+    height: 500px;
+}
+
+.box > #face-image {
+    /* background-image: url(https://anhdephd.vn/wp-content/uploads/2022/04/hinh-nen-may-tinh-de-thuong-nhung-chu-chim-non.jpg); */
+    background-size: cover;
+    background-position: center;
+}

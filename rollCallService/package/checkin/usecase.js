@@ -1,22 +1,23 @@
 const fetch = require("node-fetch");
 const AppError = require("../../utils/error");
-const repo = require("./repository");
-const classUC = require("./../class/usecase");
+const checkinRepo = require("./repository");
+const classRepo = require("./../class/repository");
 
 const maxCheckinTime = 2 * 60 * 1000; // ms
 
 async function createCheckin(classID) {
-    return repo.createCheckin(classID);
+    return checkinRepo.createCheckin(classID);
 }
 
 async function getCheckinByID(id) {
-    return repo.getCheckinByID(id);
+    return checkinRepo.getCheckinByID(id);
 }
 
 async function doCheckin(checkinID, imageUrl) {
     const currentTime = Date.now();
-    const checkin = await repo.getCheckinByID(checkinID);
+    const checkin = await checkinRepo.getCheckinByID(checkinID);
     // check checkin existence and checkin deadline
+
     if (!checkin || currentTime - checkin.createdAt > maxCheckinTime) {
         throw new AppError(403, "Checkin Forbidden");
     } 
@@ -28,7 +29,7 @@ async function doCheckin(checkinID, imageUrl) {
     const data = {
         imageUrl: imageUrl,
         department: checkin.classID,
-        metatdata: {
+        metadata: {
             checkinID: checkinID
         }
     };
@@ -58,13 +59,13 @@ async function doCheckin(checkinID, imageUrl) {
 }
 
 async function addAttendance(checkinID, classID, studentID) {
-    const isStudentInClass = await classUC.isStudentExist(classID, studentID);
-    if (!isStudentInClass) {
+    const student = await classRepo.getClassContainStudent(classID, studentID);
+    if (!student) {
         console.log("Student is not in class")
         return;
     }
 
-    await repo.addAttendance(checkinID, studentID);
+    await checkinRepo.addAttendance(checkinID, studentID);
 }
 
 module.exports = {

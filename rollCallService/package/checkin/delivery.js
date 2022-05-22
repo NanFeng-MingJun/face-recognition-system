@@ -39,7 +39,7 @@ router.post("/webhook",
 );
 
 router.post("/:checkinID", 
-    body(["imageUrl"]).notEmpty().isURL(), 
+    body(["imageUrl"]).notEmpty().isURL({ require_tld: false }), 
 
     async (req, res, next) => {
         // validation
@@ -49,7 +49,7 @@ router.post("/:checkinID",
         }
 
         try {
-            const checkinID = req.query.checkinID;
+            const checkinID = req.params.checkinID;
             const imageUrl = req.body.imageUrl;
             await uc.doCheckin(checkinID, imageUrl);
         }

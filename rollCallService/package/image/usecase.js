@@ -1,4 +1,5 @@
 const minioClient = require("./../../config/minio.js");
+const AppError = require("./../../utils/error");
 const uuid = require("uuid").v4;
 
 function uploadImage(imageName) {
@@ -7,8 +8,20 @@ function uploadImage(imageName) {
 
 async function getPresignedUrl() {
     const name = uuid() + ".png";
-    const url = await minioClient.presignedPutObject("face", name);
-    return { name, url};
+    const putExpiry = 2 * 60; // 2s
+    const getExpiry = 365 * 24 * 60 * 60; // 1y
+    let putUrl, getUrl;
+    
+    try {
+        putUrl = await minioClient.presignedPutObject("face", name, putExpiry);
+        getUrl = "https://df2c-118-69-96-108.jp.ngrok.io/face/" + name;
+    }
+    catch(err) {
+        console.error(err);
+        throw new AppError(500, "Internal Server");
+    }
+
+    return { name, putUrl, getUrl };
 }
 
 module.exports = {
