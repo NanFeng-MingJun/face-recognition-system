@@ -9,8 +9,17 @@ async function createCheckin(classID) {
     return checkinRepo.createCheckin(classID);
 }
 
-async function getCheckinByID(id) {
-    return checkinRepo.getCheckinByID(id);
+async function getClassCheckinByID(id, classID) {
+    const checkin = await checkinRepo.getCheckinByID(id);
+    if (!checkin || checkin.classID != classID) {
+        throw new AppError(404, "checkin not found");
+    }
+
+    return checkin;
+}
+
+async function getCheckinsByClassID(classID) {
+    return checkinRepo.getCheckinsByClassID(classID);
 }
 
 async function doCheckin(checkinID, imageUrl) {
@@ -70,7 +79,8 @@ async function addAttendance(checkinID, classID, studentID) {
 
 module.exports = {
     createCheckin,
-    getCheckinByID,
+    getClassCheckinByID,
+    getCheckinsByClassID,
     doCheckin,
     addAttendance,
 }

@@ -14,7 +14,7 @@ async function getPresignedUrl() {
     
     try {
         putUrl = await minioClient.presignedPutObject("face", name, putExpiry);
-        getUrl = "https://df2c-118-69-96-108.jp.ngrok.io/face/" + name;
+        getUrl = "http://localhost:9000/face/" + name;
     }
     catch(err) {
         console.error(err);

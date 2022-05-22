@@ -68,7 +68,7 @@ router.get("/info", async (req, res, next) => {
 
 // update student image
 router.post("/image", 
-    body(["imageUrl"]).notEmpty().isURL(),
+    body(["imageUrl"]).notEmpty().isURL({ require_tld: false }),
 
     async (req, res, next) => {
         const errors = validationResult(req);

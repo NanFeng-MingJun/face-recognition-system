@@ -19,6 +19,16 @@ async function getCheckinByID(id) {
     }
 }
 
+async function getCheckinsByClassID(classID) {
+    try {
+        return await Checkin.find({ classID }, { createdAt: 1 }).exec();
+    }
+    catch(err) {
+        console.error(err);
+        throw new AppError(500, "Internal Server Error");
+    }
+}
+
 async function addAttendance(checkinID, studentID) {
     try {
         await Checkin.updateOne({ _id: checkinID }, {
@@ -33,6 +43,7 @@ async function addAttendance(checkinID, studentID) {
 
 module.exports = {
     createCheckin,
+    getCheckinsByClassID,
     getCheckinByID,
     addAttendance
 }

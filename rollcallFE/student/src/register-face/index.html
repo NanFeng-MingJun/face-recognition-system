@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container is-flex is-justify-content-center is-align-items-center">
+        <div class="box is-flex p-0">
+            <video id="camera" autoplay width="500" height="500">
+                
+            </video>
+            <div id="control" class="px-5 is-flex is-align-items-center is-justify-content-center is-flex-direction-column">
+                <h1 class="title is-3 mb-5 has-text-centered">Register Face</h1>
+                <h2 class="subtitle is-4 has-text-centered">Look to camera and click capture</h2>
+                <button class="button is-link is-hidden" id="btn-capture">Capture</button>
+                <button class="button is-static is-hidden" id="btn-disabled">Your face has been registered</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>

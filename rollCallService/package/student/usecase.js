@@ -27,11 +27,11 @@ async function getStudentByID(studentID) {
 async function updateImage(studentID, imageUrl) {
     const student = await studentRepo.getStudentByID(studentID);
     if (!student) {
-        throw AppError(404, "Student not found");
+        throw new AppError(404, "Student not found");
     }
 
 	if (student.isImgUploaded) {
-		throw AppError(403, "Forbidden");
+		throw new AppError(403, "Forbidden");
 	}
 
     student.imageUrl = imageUrl;

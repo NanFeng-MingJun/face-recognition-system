@@ -1,0 +1,13 @@
+.container {
+    height: 100vh;
+}
+
+.box > * {
+    min-width: 500px;
+    min-height: 500px;
+}
+
+.box > #camera {
+    -webkit-transform: scaleX(-1);
+            transform: scaleX(-1);
+}

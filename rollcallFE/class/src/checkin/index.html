@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="columns m-0">
+        <aside class="menu column is-one-quarter">
+            <p class="menu-label">
+                Checkin List
+            </p>
+            <ul class="menu-list">
+                <template id="checkin-list">
+                    <li><a>example</a></li>
+                </template>
+            </ul>
+        </aside>
+        <div class="container p-4">
+            <table class="table is-fullwidth">
+                <thead>
+                    <th>StudentID</th>
+                    <th>Attendance ?</th>
+                    <th>Checkin Image</th>
+                </thead>
+                <tbody>
+                    <template id="student-list">
+                        <tr>
+                            <td>18120520</td>
+                            <td>Yes</td>
+                            <td>example.com/image.jpg</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </div>
+      
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>

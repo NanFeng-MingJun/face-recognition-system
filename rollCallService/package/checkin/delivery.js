@@ -61,5 +61,28 @@ router.post("/:checkinID",
     }
 );
 
+router.get("/", async (req, res, next) => {
+    const classID = req.user.classID;
+    try {
+        const list = await uc.getCheckinsByClassID(classID);
+        res.status(200).json({ list });
+    }
+    catch(err) {
+        return next(err);
+    }
+});
+
+router.get("/:checkinID", async (req, res, next) => {
+    const classID = req.user.classID;
+    const checkinID = req.params.checkinID;
+    try {
+        const checkin = await uc.getClassCheckinByID(checkinID, classID);
+        res.status(200).json({ data: checkin });
+    }
+    catch(err) {
+        return next(err);
+    }
+});
+
 
 module.exports = { router } 
