@@ -1,4 +1,6 @@
-const endpoint = "http://localhost:3005/students/info";
+import * as config from "root/config.json"
+
+const endpoint = config.apiEndpoint + "/students/info";
 const nameDisplay = document.querySelector("#name");
 
 async function showInfo() {

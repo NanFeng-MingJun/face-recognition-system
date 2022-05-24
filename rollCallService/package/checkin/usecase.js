@@ -39,7 +39,8 @@ async function doCheckin(checkinID, imageUrl) {
         imageUrl: imageUrl,
         department: checkin.classID,
         metadata: {
-            checkinID: checkinID
+            checkinID: checkinID,
+            checkinImg: imageUrl
         }
     };
 
@@ -67,14 +68,14 @@ async function doCheckin(checkinID, imageUrl) {
     }
 }
 
-async function addAttendance(checkinID, classID, studentID) {
-    const student = await classRepo.getClassContainStudent(classID, studentID);
-    if (!student) {
+async function addAttendance(checkinID, classID, attendance) {
+    const student = await classRepo.getClassContainStudent(classID, attendance.studentID);
+    if (!student && attendance.studentID != "unknown") {
         console.log("Student is not in class")
         return;
     }
 
-    await checkinRepo.addAttendance(checkinID, studentID);
+    await checkinRepo.addAttendance(checkinID, attendance);
 }
 
 module.exports = {

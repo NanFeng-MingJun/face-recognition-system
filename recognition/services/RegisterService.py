@@ -24,5 +24,6 @@ class RegisterService:
                 db.insert_vector([int(message[1][0])], emb, message[2], department)
                 
             return {'result': True, 'bbox': list(bbox), 'time': int(datetime.datetime.now().timestamp() * 1000)}
-        except:
+        except Exception as e:
+            print(e)
             return {'result': False, 'bbox': [-1,-1,-1,-1], 'time': int(datetime.datetime.now().timestamp() * 1000)}

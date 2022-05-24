@@ -165,8 +165,6 @@ services:
       - "etcd"
       - "minio"
     
-
-
 # volumes:
 #   kafka-properties:
 #     external: false

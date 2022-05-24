@@ -1,5 +1,18 @@
 const mongoose = require("mongoose");
 
+const attendanceSchema = new mongoose.Schema({
+    studentID: {
+        type: String,
+        required: true,
+        ref: "students"
+    },
+
+    checkinImg: {
+        type: String,
+        required: true
+    }
+});
+
 const checkinSchema = new mongoose.Schema({
     classID: {
         type: String,
@@ -7,7 +20,7 @@ const checkinSchema = new mongoose.Schema({
     },
 
     attendances: {
-        type: [String],
+        type: [attendanceSchema],
         default: []
     },
 

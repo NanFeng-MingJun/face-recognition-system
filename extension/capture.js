@@ -1,12 +1,12 @@
-faceapi.nets.mtcnn.loadFromUri('https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights');
+// faceapi.nets.mtcnn.loadFromUri('https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights');
 
-async function detect(input) {
-    const detection = await faceapi.detectSingleFace(input, new faceapi.MtcnnOptions({
-        maxNumScales: 5,
-        minFaceSize: 100,
-    }));
-    return detection;
-}
+// async function detect(input) {
+//     const detection = await faceapi.detectSingleFace(input, new faceapi.MtcnnOptions({
+//         maxNumScales: 5,
+//         minFaceSize: 100,
+//     }));
+//     return detection;
+// }
 
 async function capture(checkinID) {
     const cv = document.createElement("canvas");

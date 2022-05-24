@@ -7,27 +7,43 @@ let activeCheckin = null;
 
 const checkinListTmpl = document.querySelector("#checkin-list");
 const studentListTmpl = document.querySelector("#student-list");
+const unknowns = document.querySelector("#unknowns");
 
 async function showCheckinDetail(id) {
     // make table empty
     const table = studentListTmpl.parentNode;
     table.innerHTML = "";
     table.appendChild(studentListTmpl);
+    unknowns.innerHTML = "";
 
     const res = await fetch(`${checkinListEndpoint}/${id}`, { credentials: "include" });
     const { data } = await res.json();
 
     students.forEach(id => {
-        const attendance = data.attendances.includes(id) ? "Yes" : "No";
+        const attendance = data.attendances.find(a => a.studentID == id);
         const row = studentListTmpl.content.cloneNode(true);
         const cols = row.querySelectorAll("td");
 
         cols[0].textContent = id;
-        cols[1].textContent = attendance;
-        // cols[2].textContent = 
+        cols[1].textContent = attendance ? "Yes" : "No";
+
+        if (attendance) {
+            cols[2].childNodes[0].textContent = attendance.checkinImg;
+            cols[2].childNodes[0].href = attendance.checkinImg;
+        }
 
         studentListTmpl.parentNode.appendChild(row);
     });
+
+    data.attendances.forEach(({ studentID, checkinImg }) => {
+        if (studentID == "unknown") {
+            const link = document.createElement("a");
+            link.style.display = "block";
+            link.href = checkinImg;
+            link.textContent = checkinImg;
+            unknowns.appendChild(link);
+        }
+    })
 }
 
 async function showCheckinList() {

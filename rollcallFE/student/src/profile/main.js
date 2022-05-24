@@ -1,11 +1,12 @@
 import placeholderImage from "./images/placeholder.png"
+import * as config from "root/config.json"
 
 const studentIDDisplay = document.querySelector("#student-id");
 const nameDisplay = document.querySelector("#name");
 const phoneDisplay = document.querySelector("#phone");
 const faceImage = document.querySelector("#face-image");
 
-const endpoint = "http://localhost:3005/students/info";
+const endpoint = config.apiEndpoint + "/students/info";
 
 async function showInfo() {
     const res = await fetch(endpoint, {

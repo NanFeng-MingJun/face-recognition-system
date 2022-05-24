@@ -1,12 +1,15 @@
 import Swal from "sweetalert2"
+import * as config from "root/config.json"
 
-const infoEndpoint = "http://localhost:3005/students/info";
-const imageServiceEndpoint = "http://localhost:3005/images";
-const uploadImageEndpoint = "http://localhost:3005/students/image";
+const infoEndpoint = config.apiEndpoint + "/students/info";
+const imageServiceEndpoint = config.apiEndpoint + "/images";
+const uploadImageEndpoint = config.apiEndpoint + "/students/image";
 
 const camera = document.querySelector("#camera");
 const btnCapture = document.querySelector("#btn-capture");
 const btnDisabled = document.querySelector("#btn-disabled");
+let streamWidth = 0;
+let streamHeight = 0;
 
 
 async function sweetAlert(text, icon) {
@@ -54,8 +57,8 @@ async function uploadStudentImage(imageUrl) {
 async function handleCapture() {
     // handle capture event
     const canvas = document.createElement("canvas");
-    canvas.width = camera.width;
-    canvas.height = camera.height;
+    canvas.width = streamWidth;
+    canvas.height = streamHeight;
 
     const ctx = canvas.getContext("2d");
     ctx.translate(canvas.width, 0);
@@ -70,7 +73,7 @@ async function handleCapture() {
         const data = await getPresignedUrl();
 
         // capture image from camera
-        ctx.drawImage(camera, 0, 0, camera.width, camera.height);
+        ctx.drawImage(camera, 0, 0);
         canvas.toBlob(async blob => {
             const file = new File([blob], data.name, { type: "image/png" });
             const options = {
@@ -118,6 +121,8 @@ async function main() {
         return;
     }
 
+    streamWidth = stream.getVideoTracks()[0].getSettings().width;
+    streamHeight = stream.getVideoTracks()[0].getSettings().height;
     camera.srcObject = stream;
     camera.onloadstart = handleCapture;
 }

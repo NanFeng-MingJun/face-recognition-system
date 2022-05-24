@@ -29,10 +29,10 @@ async function getCheckinsByClassID(classID) {
     }
 }
 
-async function addAttendance(checkinID, studentID) {
+async function addAttendance(checkinID, attendance) {
     try {
         await Checkin.updateOne({ _id: checkinID }, {
-            $push: { attendances: studentID }
+            $push: { attendances: attendance }
         }).exec();
     }
     catch(err) {

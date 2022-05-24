@@ -2,3 +2,5 @@
 */**/venv
 rollcallFE/*/dist
 rollcallFE/*/.parcel-cache
+extension_dist
+rollCallService/.env

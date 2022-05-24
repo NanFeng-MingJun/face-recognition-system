@@ -13,6 +13,7 @@ router.post("/webhook",
     body(["department"]).isString(),
     body(["metadata"]).isObject(),
     body(["metadata.checkinID"]).notEmpty().isString(),
+    body(["metadata.checkinImg"]).notEmpty().isString(),
 
     async (req, res, next) => {
         const errors = validationResult(req);
@@ -24,11 +25,14 @@ router.post("/webhook",
         console.log(req.body);
 
         const { checkinID } = req.body.metadata;
-        const studentID = req.body.ID;
         const classID = req.body.department;
+        const attendance = {
+            studentID: req.body.ID,
+            checkinImg: req.body.metadata.checkinImg
+        }
 
         try {
-            await uc.addAttendance(checkinID, classID, studentID);
+            await uc.addAttendance(checkinID, classID, attendance);
         }
         catch(err) {
             next(err);
