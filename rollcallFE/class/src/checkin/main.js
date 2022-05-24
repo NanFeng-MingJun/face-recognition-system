@@ -1,7 +1,8 @@
 import moment from "moment-timezone";
+import * as config from "root/config.json"
 
-const checkinListEndpoint = "http://localhost:3005/checkin";
-const classEndpoint = "http://localhost:3005/classes/info";
+const checkinListEndpoint = config.apiEndpoint + "/checkin";
+const classEndpoint = config.apiEndpoint + "/classes/info";
 let students = [];
 let activeCheckin = null;
 

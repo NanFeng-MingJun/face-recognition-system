@@ -16,7 +16,7 @@ let currentScreen = chkJoinForm;
 
 
 let checkinState = null;
-const socket = io.connect("http://localhost:3005");
+const socket = io.connect("$khoaluan-rollcall-url");
 
 
 function closeContainer() {

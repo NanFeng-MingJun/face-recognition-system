@@ -1,6 +1,7 @@
 import Swal from "sweetalert2"
+import * as config from "root/config.json"
 
-const endpoint = "http://localhost:3005/auth/login?role=class";
+const endpoint = config.apiEndpoint + "/auth/login?role=class";
 const classIdInput = document.querySelector("#classid");
 const passwordInput = document.querySelector("#password");
 const btnLogin = document.querySelector("#btn-login");

@@ -22,7 +22,7 @@ async function capture(checkinID) {
     // cv2 = await faceapi.extractFaces(cv, [await detect(cv)]);
     cv.toBlob(async function(blob) {
         // get presigned url
-        const res = await fetch("http://localhost:3005/images");
+        const res = await fetch("$khoaluan-rollcall-url/images");
         const { putUrl, getUrl, name } = await res.json();
 
         // upload image to presigned url
@@ -37,7 +37,7 @@ async function capture(checkinID) {
         }
 
         // upload image info to server
-        const res3 = await fetch("http://localhost:3005/checkin/" + checkinID, {
+        const res3 = await fetch("$khoaluan-rollcall-url/checkin/" + checkinID, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
