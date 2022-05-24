@@ -20,7 +20,9 @@ router.post("/login",
         try {
             const token = await uc.login(username, password, role);
             res.cookie("token", token, {
-                maxAge: 24 * 60 * 60 * 1000
+                maxAge: 24 * 60 * 60 * 1000,
+                sameSite: "None",
+                secure: true
             });
             res.status(200).json({ token });
         }
