@@ -5,8 +5,8 @@ const classRepo = require("./../class/repository");
 
 const maxCheckinTime = 2 * 60 * 1000; // ms
 
-async function createCheckin(classID) {
-    return checkinRepo.createCheckin(classID);
+async function createCheckin(classID, requestCount) {
+    return checkinRepo.createCheckin(classID, requestCount);
 }
 
 async function getClassCheckinByID(id, classID) {
@@ -59,11 +59,13 @@ async function doCheckin(checkinID, imageUrl) {
     }
     catch(err) {
         console.error(`${face_sys_endpoint} is unavailable`);
+        await checkinRepo.increaseCount("requestCount", -1); // rollback crount
         throw new AppError(503, "Service unavailable");
     }
 
     if (!sendRes.ok) {
         console.error("Error to create face recognition ticket");
+        await checkinRepo.increaseCount("requestCount", -1); // rollback crount
         throw new AppError(500, "Internal Server Error");
     }
 }
@@ -71,7 +73,7 @@ async function doCheckin(checkinID, imageUrl) {
 async function addAttendance(checkinID, classID, attendance) {
     const student = await classRepo.getClassContainStudent(classID, attendance.studentID);
     if (!student && attendance.studentID != "unknown") {
-        console.log("Student is not in class")
+        console.log("Student is not in class");
         return;
     }
 

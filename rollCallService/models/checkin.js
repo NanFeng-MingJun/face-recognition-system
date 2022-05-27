@@ -10,6 +10,11 @@ const attendanceSchema = new mongoose.Schema({
     checkinImg: {
         type: String,
         required: true
+    },
+
+    at: {
+        type: Date,
+        required: true
     }
 });
 
@@ -19,9 +24,24 @@ const checkinSchema = new mongoose.Schema({
         ref: "classes"
     },
 
+    requestCount: {
+        type: Number,
+        required: true
+    },
+
+    isDone: {
+        type: Boolean,
+        default: false
+    },
+
     attendances: {
         type: [attendanceSchema],
         default: []
+    },
+
+    endAt: {
+        type: Date,
+        required: true
     },
 
     createdAt: {

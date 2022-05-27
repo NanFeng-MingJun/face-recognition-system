@@ -40,11 +40,12 @@ async function joinClassAsHost(socket, data) {
 }
 
 // Capture member for host
-async function captureMember(socket, data) {
+async function captureMember(socket, io, data) {
 	console.log(socket.role, socket.room);
     if (socket.role != "host") return;
 
-    const checkinID = await checkinUC.createCheckin(socket.room);
+    const roomSize = io.sockets.adapter.rooms.get(socket.room).size;
+    const checkinID = await checkinUC.createCheckin(socket.room, roomSize - 1); // except host
     socket.to(socket.room).emit("capture", { checkinID });
 }
 

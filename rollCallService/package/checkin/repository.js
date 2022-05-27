@@ -1,9 +1,16 @@
 const Checkin = require("./../../models/checkin");
 
-async function createCheckin(classID) {
+async function createCheckin(classID, requestCount) {
+    const createdAt = Date.now();
+    const waitTimeout = 30 * 60 * 1000;
+
     const checkin = await Checkin.create({
-        classID: classID
+        classID: classID,
+        requestCount: requestCount,
+        endAt: createdAt + waitTimeout
     });
+
+    console.log(checkin);
 
     return checkin._id.toString();
 }
@@ -41,9 +48,22 @@ async function addAttendance(checkinID, attendance) {
     }
 }
 
+async function increaseCount(countField, amount) {
+    try {
+        await Checkin.updateOne({ _id: checkinID }, {
+            $inc: { [countField]: amount }
+        }).exec();
+    }
+    catch(err) {
+        console.error(err);
+        throw new AppError(500, "Internal Server Error");
+    }
+}
+
 module.exports = {
     createCheckin,
     getCheckinsByClassID,
     getCheckinByID,
-    addAttendance
+    addAttendance,
+    increaseCount
 }
