@@ -30,12 +30,14 @@ async def initialize():
     while True:
         try:
             consumer = aiokafka.AIOKafkaConsumer('new_ticket_received', loop=loop, bootstrap_servers=os.getenv('KAFKA_BROKER_SERVER'), value_deserializer=deserializer, group_id='recognition')
+            # get cluster layout and join group
+            await consumer.start()
             retry = 0
             break
         except Exception as e:
             print(e)
             print("Reconnect to kafka")
-            if retry == 7:
+            if retry == 20:
                 print("Can not connect to kafka")
                 return e
             sleep(5)
@@ -45,22 +47,19 @@ async def initialize():
     while True:
         try:
             producer = aiokafka.AIOKafkaProducer(loop=loop, bootstrap_servers=os.getenv('KAFKA_BROKER_SERVER'), value_serializer=serializer)
+            # get cluster layout and initial topic/partition leadership information
+            await producer.start()
             retry = 0
             break
         except Exception as e:
             print(e)
             print("Reconnect to kafka")
-            if retry == 7:
+            if retry == 20:
                 print("Can not connect to kafka")
                 return e
             sleep(5)
             retry += 1
             
-    # get cluster layout and join group
-    await consumer.start()
-    
-    # get cluster layout and initial topic/partition leadership information
-    await producer.start()
 
     partitions: Set[TopicPartition] = consumer.assignment()
     nr_partitions = len(partitions)
