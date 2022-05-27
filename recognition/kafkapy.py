@@ -4,6 +4,7 @@ import asyncio
 import json
 import sys
 import os
+import datetime
 
 from dotenv import load_dotenv
 from typing import Set
@@ -129,7 +130,15 @@ async def consume_message(consumer):
             
     except Exception as e:
         print(e)         
-
+        return {"ID": "-1", 
+                "ticketID": "-1", 
+                "organization": tmp["organization"], 
+                "department": "_default", 
+                "boundingBox": [-1,-1,-1,-1],
+                "timestamp": int(datetime.datetime.now().timestamp() * 1000),
+                "metadata": "-1"
+                }
+        
     finally:
         # will leave consumer group; perform autocommit if enabled
         print("Stop.........")
