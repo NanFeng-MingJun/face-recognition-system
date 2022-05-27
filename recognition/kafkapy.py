@@ -1,3 +1,4 @@
+from time import sleep
 import aiokafka
 import asyncio
 import json
@@ -23,9 +24,38 @@ async def initialize():
     loop = asyncio.get_event_loop()
     global consumer
     global producer
+    retry = 0
     
-    consumer = aiokafka.AIOKafkaConsumer('new_ticket_received', loop=loop, bootstrap_servers=os.getenv('KAFKA_BROKER_SERVER'), value_deserializer=deserializer, group_id='recognition')
-    producer = aiokafka.AIOKafkaProducer(loop=loop, bootstrap_servers=os.getenv('KAFKA_BROKER_SERVER'), value_serializer=serializer)
+    # Create consumer
+    while True:
+        try:
+            consumer = aiokafka.AIOKafkaConsumer('new_ticket_received', loop=loop, bootstrap_servers=os.getenv('KAFKA_BROKER_SERVER'), value_deserializer=deserializer, group_id='recognition')
+            retry = 0
+            break
+        except Exception as e:
+            print(e)
+            print("Reconnect to kafka")
+            if retry == 7:
+                print("Can not connect to kafka")
+                return e
+            sleep(5)
+            retry += 1
+        
+    # Create producer
+    while True:
+        try:
+            producer = aiokafka.AIOKafkaProducer(loop=loop, bootstrap_servers=os.getenv('KAFKA_BROKER_SERVER'), value_serializer=serializer)
+            retry = 0
+            break
+        except Exception as e:
+            print(e)
+            print("Reconnect to kafka")
+            if retry == 7:
+                print("Can not connect to kafka")
+                return e
+            sleep(5)
+            retry += 1
+            
     # get cluster layout and join group
     await consumer.start()
     
