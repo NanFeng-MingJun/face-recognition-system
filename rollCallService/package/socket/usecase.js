@@ -45,6 +45,7 @@ async function captureMember(socket, io, data) {
     if (socket.role != "host") return;
 
     const roomSize = io.sockets.adapter.rooms.get(socket.room).size;
+    console.log(roomSize);
     const checkinID = await checkinUC.createCheckin(socket.room, roomSize - 1); // except host
     socket.to(socket.room).emit("capture", { checkinID });
 }

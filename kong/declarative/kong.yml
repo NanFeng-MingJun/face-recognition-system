@@ -26,8 +26,6 @@ services:
         config:
           claims_to_verify: 
             - "exp"
-        
-        
 
 consumers:
   - username: organization

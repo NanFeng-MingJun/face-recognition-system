@@ -7,7 +7,8 @@ async function createCheckin(classID, requestCount) {
     const checkin = await Checkin.create({
         classID: classID,
         requestCount: requestCount,
-        endAt: createdAt + waitTimeout
+        endAt: createdAt + waitTimeout,
+        createdAt: createdAt,
     });
 
     console.log(checkin);
@@ -38,8 +39,29 @@ async function getCheckinsByClassID(classID) {
 
 async function addAttendance(checkinID, attendance) {
     try {
-        await Checkin.updateOne({ _id: checkinID }, {
+        const updateResult = await Checkin.updateOne({ _id: checkinID }, {
             $push: { attendances: attendance }
+        }).exec();
+
+        return updateResult.modifiedCount;
+    }
+    catch(err) {
+        console.error(err);
+        throw new AppError(500, "Internal Server Error");
+    }
+}
+
+async function updateRequestCount(checkinID, amount) {
+    try {
+        await Checkin.updateOne({ 
+            _id: checkinID,
+            requestCount: {
+                $gt: 0
+            }
+        }, {
+            $inc: { 
+                "requestCount": amount 
+            }
         }).exec();
     }
     catch(err) {
@@ -48,22 +70,27 @@ async function addAttendance(checkinID, attendance) {
     }
 }
 
-async function increaseCount(countField, amount) {
+async function checkAndUpdateEndtime(checkinID, dateNow) {
     try {
-        await Checkin.updateOne({ _id: checkinID }, {
-            $inc: { [countField]: amount }
+        await Checkin.updateOne({ 
+            _id: checkinID,
+            requestCount: 0,
+            endAt: { $gte: dateNow }
+        }, {
+            endAt: dateNow
         }).exec();
     }
     catch(err) {
         console.error(err);
         throw new AppError(500, "Internal Server Error");
     }
-}
+} 
 
 module.exports = {
     createCheckin,
     getCheckinsByClassID,
     getCheckinByID,
     addAttendance,
-    increaseCount
+    updateRequestCount,
+    checkAndUpdateEndtime
 }

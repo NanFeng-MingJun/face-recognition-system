@@ -8,6 +8,7 @@ let activeCheckin = null;
 
 const checkinListTmpl = document.querySelector("#checkin-list");
 const studentListTmpl = document.querySelector("#student-list");
+const progressDisplay = document.querySelector("#progress");
 const unknowns = document.querySelector("#unknowns");
 
 async function showCheckinDetail(id) {
@@ -20,6 +21,13 @@ async function showCheckinDetail(id) {
     const res = await fetch(`${checkinListEndpoint}/${id}`, { credentials: "include" });
     const { data } = await res.json();
 
+    // display progress
+    if (new Date() > new Date(data.endAt)) {
+        progressDisplay.textContent = "(Done)";
+    }
+    else {
+        progressDisplay.textContent = "(In processing)";
+    }
     students.forEach(id => {
         const attendance = data.attendances.find(a => a.studentID == id);
         const row = studentListTmpl.content.cloneNode(true);
@@ -29,6 +37,10 @@ async function showCheckinDetail(id) {
         cols[1].textContent = attendance ? "Yes" : "No";
 
         if (attendance) {
+            // overtime attendance has color red
+            if (attendance.at > data.endAt) { 
+                cols[1].style.color = "red";
+            }
             cols[2].childNodes[0].textContent = attendance.checkinImg;
             cols[2].childNodes[0].href = attendance.checkinImg;
         }

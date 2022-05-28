@@ -59,13 +59,13 @@ async function doCheckin(checkinID, imageUrl) {
     }
     catch(err) {
         console.error(`${face_sys_endpoint} is unavailable`);
-        await checkinRepo.increaseCount("requestCount", -1); // rollback crount
+        await checkinRepo.updateRequestCount(checkinID, -1); // rollback count
         throw new AppError(503, "Service unavailable");
     }
 
     if (!sendRes.ok) {
         console.error("Error to create face recognition ticket");
-        await checkinRepo.increaseCount("requestCount", -1); // rollback crount
+        await checkinRepo.updateRequestCount(checkinID, -1); // rollback count
         throw new AppError(500, "Internal Server Error");
     }
 }
@@ -77,7 +77,16 @@ async function addAttendance(checkinID, classID, attendance) {
         return;
     }
 
-    await checkinRepo.addAttendance(checkinID, attendance);
+    const dateNow = Date.now();
+    attendance.at = dateNow;
+
+    const updatedCount = await checkinRepo.addAttendance(checkinID, attendance);
+    if (!updatedCount) {
+        return;
+    }
+
+    await checkinRepo.updateRequestCount(checkinID, -1);
+    await checkinRepo.checkAndUpdateEndtime(checkinID, dateNow);
 }
 
 module.exports = {

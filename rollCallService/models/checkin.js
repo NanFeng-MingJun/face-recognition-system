@@ -29,11 +29,6 @@ const checkinSchema = new mongoose.Schema({
         required: true
     },
 
-    isDone: {
-        type: Boolean,
-        default: false
-    },
-
     attendances: {
         type: [attendanceSchema],
         default: []

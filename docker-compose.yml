@@ -119,6 +119,8 @@ services:
     hostname: recognition-service
     ports:
       - 3000:3000
+    volumes:
+      - /recognitionTmp:/tmp
     depends_on:
       - broker
       - standalone
