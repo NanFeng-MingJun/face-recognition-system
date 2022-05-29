@@ -32,8 +32,6 @@ class RegisterResult(BaseModel):
     bbox: list
     time: int
     
-
-f = open("/tmp/registerLog.txt", "a")
 class RegisterController:
     router = APIRouter()
 
@@ -47,7 +45,9 @@ class RegisterController:
         if not deparment_list:
             deparment_list = ['_default']
             
-        f.write(payload.label + " " + payload.url)
+        f = open("/tmp/registerLog.txt", "a")
+        f.write(payload.label + " " + payload.url + "\n")
+        f.close()
              
         tmp = [[payload.url], [payload.label], organization, deparment_list] 
         #tmp = [['https://image.thanhnien.vn/w2048/Uploaded/2022/mftum/2022_04_27/dam-vinh-hung-ly-hon-9854.png'],[18120506], 'school_a', ['class_1', 'class_2']]

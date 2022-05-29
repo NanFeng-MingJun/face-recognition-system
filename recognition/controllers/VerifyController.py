@@ -24,8 +24,6 @@ class VerifyResult(BaseModel):
     bbox: list
     time: int
     
-
-f = open("/tmp/verifyLog.txt", "a")
 class VerifyController:
     router = APIRouter()
 
@@ -39,7 +37,9 @@ class VerifyController:
         if not deparment:
             deparment = '_default'
 
-        f.write(payload.label + " " + payload.url)
+        f = open("/tmp/verifyLog.txt", "a")
+        f.write(payload.label + " " + payload.url + "\n")
+        f.close()
         
         tmp = [[payload.url],[payload.label], organization, payload.deparment] 
         #tmp = [['https://image.thanhnien.vn/w2048/Uploaded/2022/mftum/2022_04_27/dam-vinh-hung-ly-hon-9854.png'],[18120506], 'HCMUS', 'cs101']
