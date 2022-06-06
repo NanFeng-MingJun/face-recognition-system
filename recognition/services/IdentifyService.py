@@ -23,3 +23,15 @@ class IdentifyService:
             return {'identity': id, 'bbox': list(bbox), 'time': int(datetime.datetime.now().timestamp() * 1000)}
         else:
             return {'identity': "unknown", 'bbox': list(bbox), 'time': int(datetime.datetime.now().timestamp() * 1000)}
+        
+        
+    @classmethod
+    def identifyMobile(cls, message, db):
+        #message [[embedding vector], school_a, class_1]
+
+        id, distance = db.search(message[0], message[1], message[2])
+        
+        if distance < verify_threshold:
+            return {'identity': id, 'time': int(datetime.datetime.now().timestamp() * 1000)}
+        else:
+            return {'identity': "unknown", 'time': int(datetime.datetime.now().timestamp() * 1000)}
