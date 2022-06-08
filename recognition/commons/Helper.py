@@ -189,7 +189,6 @@ def get_image_url(url):
 #model = load_onnx(model_serialize)
 #img = np.zeros((3,112,112))
 #emb = get_embedding(model, img)
-#print(emb)
 #a = EmbedHandler()
 #a.load_all_collection()
 #print(a.search_by_id(18120506,np.expand_dims(emb,axis=0),"HCMUS","cs101"))
