@@ -1,6 +1,4 @@
 const checkinHTML = `
-
-
 <div class="checkin-toggle-button">
   <div></div>
 </div>

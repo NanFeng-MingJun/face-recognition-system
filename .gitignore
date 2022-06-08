@@ -5,3 +5,4 @@ rollcallFE/*/.parcel-cache
 extension_dist
 rollCallService/.env
 milvus
+mobile/*/venv

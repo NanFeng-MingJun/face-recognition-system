@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  rollcall:
+    build:
+      context: .
+    container_name: rollcall
+    ports:
+      - "3005:3005"
+    depends_on:
+      - minio
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    command: minio server /data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - ./minio_data:/data
+

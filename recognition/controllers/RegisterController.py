@@ -32,6 +32,7 @@ class RegisterResult(BaseModel):
     bbox: list
     time: int
     
+    
 class RegisterController:
     router = APIRouter()
 

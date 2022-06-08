@@ -24,6 +24,7 @@ class VerifyResult(BaseModel):
     bbox: list
     time: int
     
+    
 class VerifyController:
     router = APIRouter()
 

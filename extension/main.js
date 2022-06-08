@@ -23,21 +23,23 @@ function closeContainer() {
     chkContainer.classList.add("is-hide");
 }
 
+function openContainer() {
+    chkContainer.classList.remove("is-hide");
+}
 
-chkRoleSelection.addEventListener("change", e => {
+function selectRoleHandler(e) {
     if (e.target.value == "host") {
-        chkPasswordInput.parentNode.style.display = "block";
+          chkPasswordInput.parentNode.style.display = "block";
     }
     else {
-        chkPasswordInput.parentElement.style.display = "none";
-        chkPasswordInput.value = "";
+      chkPasswordInput.parentElement.style.display = "none";
+      chkPasswordInput.value = "";
     }
-});
+}
 
-chkToggleBtn.addEventListener("click", e => {
-    chkContainer.classList.remove("is-hide");
-});
 
+chkRoleSelection.addEventListener("change", selectRoleHandler);
+chkToggleBtn.addEventListener("click", openContainer);
 chkFormCancelBtn.addEventListener("click", closeContainer);
 chkToolsCancelBtn.addEventListener("click", closeContainer);
 chkJoinedCancelBtn.addEventListener("click", closeContainer);
@@ -59,8 +61,11 @@ chkFormJoinBtn.addEventListener("click", e => {
     }
 });
 
+
 chkToolsCaptureBtn.addEventListener("click", e => {
     if (checkinState.role == "host") {
+        const isConfirmed = confirm("Are you sure you want to do a roll call ?")
+        if (!isConfirmed) return;
         socket.emit("capture-member", {});
     }
 });
@@ -82,7 +87,13 @@ socket.on("notify-join", data => {
     currentScreen.classList.remove("is-hide");
 });
 
+
 socket.on("capture", (data) => {
     console.log(data);
-    capture(data.checkinID);
+    if (checkinState.role == "host") {
+        alert("Sent request successfully");
+        closeContainer();
+    } else {
+        capture(data.checkinID);
+    }
 });
