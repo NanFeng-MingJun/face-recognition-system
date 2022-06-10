@@ -10,6 +10,14 @@ type Ticket struct {
 	Metadata     map[string]interface{} `json:"metadata"`
 }
 
+type EmbedTicket struct {
+	TicketID     string                 `json:"ticketID"`
+	Embedding    [1][512]float64        `json:"embedding"`
+	Organization string                 `json:"organization"`
+	Department   string                 `json:"department"`
+	Metadata     map[string]interface{} `json:"metadata"`
+}
+
 // type boundingBox struct {
 // 	X      int `json:"x"`
 // 	Y      int `json:"y"`
@@ -33,5 +41,6 @@ type TicketRepository interface {
 
 type TicketUseCase interface {
 	SendTicket(payload *Ticket) (string, error)
+	SendEmbedTicket(payload *EmbedTicket) (string, error)
 	GetTicketResult(ctx context.Context, ticketID string) (*TicketResult, error)
 }

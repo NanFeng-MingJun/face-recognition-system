@@ -18,9 +18,8 @@ app = FastAPI()
 @app.post("/get-embedding")
 def read_root(payload: Payload):
     model = load_onnx("./model.onnx")
-    frame = np.array(payload.im).reshape((480//4, 640//4, 3))
-    print(frame.shape)
-    cv2.imshow("test", frame)
+    frame = np.array(payload.im).reshape((480//4, 640//4, 3)).astype(np.uint8)
+    print(frame)
     img, bbox = preprocess(frame, payload.bbox, np.array(payload.lmk).reshape(5, 2))
     emb = get_embedding(model, img)
     return {"emb": emb.tolist()}

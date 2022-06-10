@@ -31,7 +31,7 @@ async function login() {
     const res = await fetch(endpoint, options);
 
     if (res.ok) {
-        return location.href = "/checkin";
+        return location.href = "/dashboard";
     }
 
     if (res.status == 401) {

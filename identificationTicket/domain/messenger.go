@@ -1,5 +1,5 @@
 package domain
 
 type MessengerUseCase interface {
-	SendMessage(message []byte) error
+	SendMessage(message []byte, topic string) error
 }

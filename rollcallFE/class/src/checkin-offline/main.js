@@ -9,14 +9,12 @@ let activeCheckin = null;
 const checkinListTmpl = document.querySelector("#checkin-list");
 const studentListTmpl = document.querySelector("#student-list");
 const progressDisplay = document.querySelector("#progress");
-const unknowns = document.querySelector("#unknowns");
 
 async function showCheckinDetail(id) {
     // make table empty
     const table = studentListTmpl.parentNode;
     table.innerHTML = "";
     table.appendChild(studentListTmpl);
-    unknowns.innerHTML = "";
 
     const res = await fetch(`${checkinListEndpoint}/${id}`, { credentials: "include" });
     const { data } = await res.json();
@@ -28,6 +26,7 @@ async function showCheckinDetail(id) {
     else {
         progressDisplay.textContent = "(In processing)";
     }
+
     students.forEach(id => {
         const attendance = data.attendances.find(a => a.studentID == id);
         const row = studentListTmpl.content.cloneNode(true);
@@ -41,28 +40,17 @@ async function showCheckinDetail(id) {
             if (attendance.at > data.endAt) { 
                 cols[1].style.color = "red";
             }
-            cols[2].childNodes[0].textContent = attendance.checkinImg;
-            cols[2].childNodes[0].href = attendance.checkinImg;
         }
 
         studentListTmpl.parentNode.appendChild(row);
     });
-
-    data.attendances.forEach(({ studentID, checkinImg }) => {
-        if (studentID == "unknown") {
-            const link = document.createElement("a");
-            link.style.display = "block";
-            link.href = checkinImg;
-            link.textContent = checkinImg;
-            unknowns.appendChild(link);
-        }
-    })
 }
 
 async function showCheckinList() {
     const res = await fetch(checkinListEndpoint, { credentials: "include" });
-    const { list } = await res.json();
+    let { list } = await res.json();
 
+    list = list.filter(c => c.mode == "offline");
     list.reverse();
     list.forEach(c => {
         const d = new Date(c.createdAt);
@@ -88,7 +76,7 @@ async function showCheckinList() {
 async function fetchStudents() {
     const res = await fetch(`${classEndpoint}`, { credentials: "include" });
     const { data } = await res.json();
-    students = data.students;
+    students = [...new Set(data.students)];
 }
 
 fetchStudents();

@@ -20,7 +20,7 @@ func New(app *iris.Application, uc domain.TicketUseCase) {
 	app.Get("/{ticketID:string}/result", h.GetTicketResult)
 }
 
-func (h *ticketHandler) SendTicket(ctx iris.Context) {
+func (h *ticketHandler) _SendTicket(ctx iris.Context) {
 	ticket := new(domain.Ticket)
 
 	err := ctx.ReadJSON(ticket)
@@ -40,6 +40,38 @@ func (h *ticketHandler) SendTicket(ctx iris.Context) {
 	ctx.JSON(map[string]interface{}{
 		"ticketID": id,
 	})
+}
+
+func (h *ticketHandler) _SendEmbedTicket(ctx iris.Context) {
+	ticket := new(domain.EmbedTicket)
+
+	err := ctx.ReadJSON(ticket)
+	if err != nil {
+		ctx.StopWithError(iris.StatusBadRequest, err)
+		return
+	}
+
+	ticket.Organization = ctx.Values().GetString("organization")
+
+	id, err := h.uc.SendEmbedTicket(ticket)
+	if err != nil {
+		ctx.StopWithError(iris.StatusInternalServerError, err)
+		return
+	}
+
+	ctx.JSON(map[string]interface{}{
+		"ticketID": id,
+	})
+}
+
+func (h *ticketHandler) SendTicket(ctx iris.Context) {
+	platform := ctx.URLParamDefault("platform", "app")
+
+	if platform == "embed" {
+		h._SendEmbedTicket(ctx)
+	} else {
+		h._SendTicket(ctx)
+	}
 }
 
 func (h *ticketHandler) GetTicketResult(ctx iris.Context) {

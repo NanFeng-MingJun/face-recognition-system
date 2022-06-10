@@ -4,7 +4,6 @@ import (
 	"request-service/domain"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
-	"github.com/spf13/viper"
 )
 
 type messengerUseCase struct {
@@ -17,9 +16,7 @@ func New(producer *kafka.Producer) domain.MessengerUseCase {
 	}
 }
 
-func (uc *messengerUseCase) SendMessage(message []byte) error {
-	topic := viper.GetString("KAFKA_TICKET_TOPIC")
-
+func (uc *messengerUseCase) SendMessage(message []byte, topic string) error {
 	return uc.producer.Produce(&kafka.Message{
 		TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
 		Value:          message,
