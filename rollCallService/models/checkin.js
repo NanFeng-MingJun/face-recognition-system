@@ -34,6 +34,11 @@ const checkinSchema = new mongoose.Schema({
         default: []
     },
 
+    mode: {
+        type: String,
+        required: true
+    },
+
     endAt: {
         type: Date,
         required: true

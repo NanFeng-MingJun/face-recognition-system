@@ -1,12 +1,12 @@
 const Checkin = require("./../../models/checkin");
 
-async function createCheckin(classID, requestCount) {
+async function createCheckin(classID, requestCount, waitTimeout, mode) {
     const createdAt = Date.now();
-    const waitTimeout = 30 * 60 * 1000;
 
     const checkin = await Checkin.create({
         classID: classID,
         requestCount: requestCount,
+        mode: mode,
         endAt: createdAt + waitTimeout,
         createdAt: createdAt,
     });
@@ -29,7 +29,20 @@ async function getCheckinByID(id) {
 
 async function getCheckinsByClassID(classID) {
     try {
-        return await Checkin.find({ classID }, { createdAt: 1 }).exec();
+        return await Checkin.find({ classID }, { createdAt: 1, mode: 1 }).exec();
+    }
+    catch(err) {
+        console.error(err);
+        throw new AppError(500, "Internal Server Error");
+    }
+}
+
+async function getLatestOffileCheckin(classID) {
+    try {
+        return await Checkin.findOne({ 
+            classID, 
+            mode: "offline",
+        }).sort({ createdAt: -1 }).exec();
     }
     catch(err) {
         console.error(err);
@@ -90,6 +103,7 @@ module.exports = {
     createCheckin,
     getCheckinsByClassID,
     getCheckinByID,
+    getLatestOffileCheckin,
     addAttendance,
     updateRequestCount,
     checkAndUpdateEndtime

@@ -5,6 +5,23 @@ const uc = require("./usecase");
 
 const router = express.Router();
 
+// create offline checkin
+router.post("/", 
+    body("waitTimeout").isInt({ min: 0 }),
+
+    async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return next(new AppError(422, "Invalid format", errors));
+        }
+
+        const { waitTimeout } = req.body;
+        const classID = req.user.classID;
+        const checkinID = await uc.createOfflineCheckin(classID, waitTimeout);
+
+        res.json({ checkinID });
+    }
+);
 
 // webhook for receive result
 router.post("/webhook", 
@@ -13,7 +30,7 @@ router.post("/webhook",
     body(["department"]).isString(),
     body(["metadata"]).isObject(),
     body(["metadata.checkinID"]).notEmpty().isString(),
-    body(["metadata.checkinImg"]).notEmpty().isString(),
+    body(["metadata.checkinImg"]).isString(),
 
     async (req, res, next) => {
         const errors = validationResult(req);
@@ -42,6 +59,32 @@ router.post("/webhook",
     }
 );
 
+router.post("/offline",
+    body(["emb"]).notEmpty().isArray({ require_tld: false }), 
+    body(["department"]).notEmpty().isString(),
+    body(["secret"]).notEmpty().isString(),
+
+    async (req, res, next) => {
+        // validation
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return next(new AppError(422, "Invalid format", errors));
+        }
+
+        try {
+            const emb = req.body.emb;
+            const classID = req.body.department;
+            const password = req.body.secret;
+            await uc.doOfflineCheckin(classID, password, emb);
+        }
+        catch(err) {
+            return next(err);
+        }
+
+        res.status(200).json({ message: "ok" });
+    }
+);
+
 router.post("/:checkinID", 
     body(["imageUrl"]).notEmpty().isURL({ require_tld: false }), 
 
@@ -55,7 +98,7 @@ router.post("/:checkinID",
         try {
             const checkinID = req.params.checkinID;
             const imageUrl = req.body.imageUrl;
-            await uc.doCheckin(checkinID, imageUrl);
+            await uc.doOnlineCheckin(checkinID, imageUrl);
         }
         catch(err) {
             return next(err);

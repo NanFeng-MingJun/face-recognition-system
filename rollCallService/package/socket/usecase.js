@@ -1,4 +1,4 @@
-const checkinUC = require("../checkin/repository.js");
+const checkinUC = require("../checkin/usecase.js");
 const classUC = require("./../class/usecase.js");
 
 // Join class event for member
@@ -46,7 +46,7 @@ async function captureMember(socket, io, data) {
 
     const roomSize = io.sockets.adapter.rooms.get(socket.room).size;
     console.log(roomSize);
-    const checkinID = await checkinUC.createCheckin(socket.room, roomSize - 1); // except host
+    const checkinID = await checkinUC.createOnlineCheckin(socket.room, roomSize - 1); // except host
     socket.to(socket.room).emit("capture", { checkinID });
 }
 

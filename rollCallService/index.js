@@ -8,7 +8,11 @@ const dotenv = require("dotenv");
 const mongoConfig = require("./config/mongodb");
 
 // dotenv
-dotenv.config();
+if (process.env.NODE_ENV == "production") {
+    dotenv.config({ path: ".env.prod" });
+} else {
+    dotenv.config({ path: ".env" });
+}
 
 // mongodb
 mongoConfig.init();

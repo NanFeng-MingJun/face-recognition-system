@@ -3,6 +3,8 @@ p, nonstudent, /students/image, POST, deny
 p, nonclass, /classes/info, GET, deny
 p, nonclass, /checkin, GET, deny
 p, nonclass, /checkin/*, GET, deny
+p, nonclass, /checkin, POST, deny
+p, nonclass, /checkin/, POST, deny
 
 g, student, nonclass
 g, anonymous, nonclass
