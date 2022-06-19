@@ -24,6 +24,10 @@ async function getStudentByID(studentID) {
     return student;
 }
 
+async function getStudents() {
+    return await studentRepo.getStudents();
+}
+
 async function updateImage(studentID, imageUrl) {
     const student = await studentRepo.getStudentByID(studentID);
     if (!student) {
@@ -50,7 +54,7 @@ async function registerClasses(studentID, classIDs) {
     const validClasses = await classRepo.getClassesByIDList(classIDs);
     const validIDs = validClasses.map(cls => cls._id);
 
-    console.log(validIDs);
+    // console.log(validIDs);
     
     const postOption = {
         headers: {
@@ -64,12 +68,21 @@ async function registerClasses(studentID, classIDs) {
             deparment: validIDs
         })
     };
-    const postRes = await fetch(process.env.FACE_SYS_REGISTER, postOption);
+
+    let postRes;
+    try {
+        postRes = await fetch(process.env.FACE_SYS_REGISTER, postOption);
+    }
+    catch(err) {
+        console.error(`${process.env.FACE_SYS_REGISTER} is unavailable`);
+        throw new AppError(503, "Service unavailable");
+    }
+
     if (!postRes.ok) {
-        console.error("Fail to connect to face resigter service", postRes.status);
+        console.error("Error to register to face system");
         throw new AppError(500, "Internal Server Error");
     }
- 
+
     const postResult = await postRes.json();
     if (!postResult.result) {
         throw new AppError(403, "Need to update valid student image");
@@ -99,6 +112,7 @@ async function login(studentID, password) {
 
 module.exports = { 
     getStudentByID,
+    getStudents,
     studentRegister,
     updateImage,
     registerClasses,

@@ -15,7 +15,17 @@ async function createStudent(student) {
 
 async function getStudentByID(studentID) {
     try {
-        return await Students.findById(studentID);
+        return await Students.findById(studentID).exec();
+    }
+    catch(err) {
+        console.error(err);
+        throw new AppError(500, "InternalError")
+    }
+}
+
+async function getStudents() {
+    try {
+        return await Students.find({}).exec();
     }
     catch(err) {
         console.error(err);
@@ -36,5 +46,6 @@ async function update(student) {
 module.exports = { 
     createStudent,
     update,
-    getStudentByID
+    getStudentByID,
+    getStudents,
 }

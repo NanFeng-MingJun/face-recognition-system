@@ -28,6 +28,16 @@ router.post("/",
     }
 );
 
+router.get("/", async (req, res, next) => {
+    try {
+        const students = await uc.getStudents();
+        res.json(students);
+    }
+    catch(err) {
+        return next(err);
+    }
+})
+
 // register student to classes
 router.post("/classes/register", 
     body(["studentID"]).notEmpty().isString(),
