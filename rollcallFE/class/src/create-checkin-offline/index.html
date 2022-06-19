@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Create Offline Checkin</title>
+</head>
+<body>
+    <div class="container is-flex is-justify-content-center is-align-items-center">
+        <div class="form box px-5 py-6">
+            <h1 class="title is-3 has-text-centered">Create New Offline Checkin</h1>
+            <div class="field">
+                <label class="label">Checkin timeout (minutes)</label>
+                <div class="control has-icons-left has-icons-right">
+                    <input class="input" id="timeout" type="text">
+                    <span class="icon is-small is-left">
+                        <i class="fa-solid fa-clock"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                  <button class="button is-link is-fullwidth mt-5" id="btn-create">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>
