@@ -134,8 +134,7 @@ async function addAttendance(checkinID, classID, attendance) {
         attendance.studentID = "unknown";
     }
 
-    const dateNow = Date.now();
-    attendance.at = dateNow;
+    attendance.at = Date.now();
 
     const updatedCount = await checkinRepo.addAttendance(checkinID, attendance);
     if (!updatedCount) {
@@ -143,7 +142,7 @@ async function addAttendance(checkinID, classID, attendance) {
     }
 
     await checkinRepo.updateRequestCount(checkinID, -1);
-    await checkinRepo.checkAndUpdateEndtime(checkinID, dateNow);
+    await checkinRepo.checkAndUpdateEndtime(checkinID, Date.now());
 }
 
 module.exports = {
